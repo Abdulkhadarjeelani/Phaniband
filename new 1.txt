@@ -1,0 +1,28 @@
+package com.megabankcorp.system;
+
+import java.util.List;
+
+import com.megabankcorp.records.Account;
+
+public abstract class Bank {
+
+    public abstract void depositAmount(Account account, double amount);
+    public abstract void withdrawAmount(Account account, double amount);
+    protected abstract double currentBalance(Account account);
+
+    List<Account> accounts; //Can be more than one account.
+
+    boolean transferAmount(Bank bank, Account transferFrom, Account transferTo, double amount) {
+        boolean isTransferred = false;
+        if (transferFrom.getAccountNumber() == transferTo.getAccountNumber()) {
+            System.out.println("Can not transfer in your own account.");
+        } else if (transferFrom.getCurrentAmount() < amount) {
+            System.out.println("You have insufficient funds.");
+        } else {
+            bank.depositAmount(transferTo, amount);
+            bank.withdrawAmount(transferFrom, amount);
+            isTransferred = true;
+        }
+        return isTransferred;
+    }
+}
